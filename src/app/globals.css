@@ -1,0 +1,452 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: linear-gradient(#0f0c29, #302b63, #24243e);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 2px solid #0f0c29;
+  background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+}
+
+.nav-button {
+  flex: 1;
+  text-align: center;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+  color: #555;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+  color: white;
+}
+
+.nav-button.active {
+  font-weight: bold;
+  color: white;
+  border-bottom: 2px solid #000;
+}
+
+/* Content */
+.content {
+  padding: 2rem;
+}
+
+.movie-card {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: linear-gradient(to bottom, #141e30, #243b55);
+  display: flex;
+  flex-direction: row; /* Flex row for horizontal layout */
+  gap: 20px;
+  height: 250px; /* Fixed height for card */
+}
+
+.movie-image {
+  width: 200px; /* Fixed width for image */
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin: -1rem;
+  margin-right: 40px;
+}
+
+.movie-info {
+  
+  
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.movie-header {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  margin-right: 100px;
+  color: white;
+}
+.movie-header h2 {
+  font-size: 54px; /* Default font size for larger screens */
+}
+.movie-header p {
+  font-size: 24px; /* Default font size for larger screens */
+  font-weight: bold;
+}
+
+.movie-header-wish h2 {
+  font-size: 54px; /* Default font size for larger screens */
+}
+.movie-header-wish p {
+  font-size: 24px; /* Default font size for larger screens */
+  font-weight: bold;
+}
+.movie-details {
+  margin-bottom: 10px;
+  margin-top: 90px;
+  font-size: 1em;
+  color: white;
+}
+.movie-header-wish {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  margin-right: 100px;
+  color: white;
+}
+
+.movie-details-wish {
+  margin-bottom: 10px;
+  margin-top: 150px;
+  font-size: 1em;
+  color: white;
+}
+
+.star-rating {
+  display: flex;
+  gap: 5px;
+}
+
+.star {
+  color: gold;
+}
+
+.star.selected {
+  color: orange;
+}
+
+.star:hover,
+.star:hover ~ .star {
+  color: #ffc107;
+}
+
+.star:hover ~ .star + .star {
+  color: #ccc;
+}
+
+/* Add Movie Button */
+.add-movie-button {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background-color: #28a745;
+  color: white;
+  font-size: 1.5rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Overlay */
+.form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  overflow-y: auto; /* Yüksekliği aşan içerikler için kaydırma */
+}
+
+/* Form Container */
+.movie-form {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: 400px;
+  max-width: 90%;
+}
+
+.movie-form h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Form Labels and Inputs */
+.movie-form label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: .6rem;
+}
+
+.movie-form label span {
+  margin-bottom: 0rem;
+  font-weight: bold;
+}
+
+.movie-form input {
+  padding: 0.2rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: .8rem;
+}
+
+/* Star Rating */
+.star-rating {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.star {
+  cursor: pointer;
+  color: #ccc; /* Normal durumda gri */
+  transition: color 0.2s ease-in-out;
+}
+
+.star.selected {
+  color: #ffc107; /* Seçili yıldızlar sarı */
+}
+
+.star:hover,
+.star:hover ~ .star {
+  color: #ffc107; /* Hover yapılan yıldız ve solundakiler sarı */
+}
+
+.star:hover ~ .star + .star {
+  color: #ccc; /* Hover sonrası sağdaki yıldızlar gri kalmalı */
+}
+
+/* Prevent extra stars from appearing */
+.star:hover ~ .star {
+  color: #ccc; /* Sağdaki yıldızlar gri kalmalı */
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.form-actions button {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.form-actions button[type="submit"] {
+  background: #28a745;
+  color: white;
+}
+
+.form-actions button[type="button"] {
+  background: #ccc;
+  color: black;
+}
+
+.form-actions button:hover {
+  filter: brightness(1.1);
+}
+.edit-movie-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 25px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-movie-button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 25px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.delete-movie-button:hover {
+  opacity: 0.8;
+}
+.edit-movie-button:hover {
+  opacity: 0.8;
+}
+/* Modal Container */
+.search-modal {
+  position: absolute;
+  top: 80px; /* Arama kutusunun hemen altına yerleştirmek için */
+  left: 50%;
+  transform: translateX(-50%); /* Modal'ı tam ortalamak için */
+  width: 90%; /* Form genişliğine uyum sağlasın */
+  max-width: 600px; /* Modal'ın maksimum genişliğini belirle */
+  max-height: 300px; /* Modal'ın maksimum yüksekliğini belirle */
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  border-radius: 8px; /* Kenarları yuvarlatılmış */
+  padding: 10px; /* İçerideki boşluk */
+  box-sizing: border-box;
+  overflow-y: auto; /* Yüksekliği aşan içerikler için kaydırma */
+}
+
+.dropdown-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdown-menu li {
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f0f0f0;
+}
+
+.center-image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100px;
+  max-height: 100px;
+}
+.sort{
+  text-align: center;
+  margin-top: 30px;
+  font-size: 32px;
+}
+.sortBy{
+  color: white;
+  margin-right: 20px;
+  font-weight: bold;
+
+}
+@media (max-width: 768px) {
+  /* Adjust content padding on smaller screens */
+  .content {
+    padding: 0rem;
+  }
+
+  /* Adjust the movie card layout */
+  .movie-card {
+    flex-direction: column; /* Stack the elements vertically on smaller screens */
+    height: auto; /* Remove fixed height for better scaling */
+    margin-right: .2rem; /* Reduce bottom margin */
+    margin-left: .2rem;
+  }
+
+  .movie-header {
+    font-size: 1.1em;
+    display: flex;
+    gap: 100px;
+    margin: -.8rem;
+  }
+
+  .movie-details {
+    font-size: 0.9em;
+    display: none;
+  }
+  .movie-header h2 {
+    font-size: 32px; /* Default font size for larger screens */
+    margin-left: 20px;
+    margin-right: 2rem;
+    text-align: center;
+  }
+  .movie-header p {
+    font-size: 16px; /* Default font size for larger screens */
+    font-weight: bold;
+    margin-left: -2rem;
+    margin-right: 2rem;
+    text-align: center;
+  }
+  .movie-header-wish {
+    font-size: 1.1em;
+    display: flex;
+    gap: 100px;
+    margin: -.8rem;
+  }
+  .movie-header-wish h2 {
+    font-size: 32px; /* Default font size for larger screens */
+    margin-left: 20px;
+    margin-right: 2rem;
+    text-align: center;
+  }
+  .movie-header-wish p {
+    font-size: 16px; /* Default font size for larger screens */
+    font-weight: bold;
+    margin-left: -2rem;
+    margin-right: 2rem;
+    text-align: center;
+  }
+  
+.movie-details-wish {
+  display: none;
+}
+
+  /* Image adjustments */
+  .movie-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%; /* Full width image on smaller screens */
+    max-width: 300px; /* Limit the max-width for better appearance */
+    margin-bottom: 1rem; /* Add margin at the bottom for separation */
+  }
+
+  /* Adjust action buttons (edit, delete) */
+  .movie-card-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .movie-card-actions button {
+    font-size: 1.2em;
+    padding: 0.5rem;
+  }
+  .navbar {
+    padding: 0rem;
+  }
+  
+  .edit-movie-button {
+    margin-left: 25px;
+  }
+  
+  .delete-movie-button {
+    margin-right: 25px;
+  }
+
+}
+
+
