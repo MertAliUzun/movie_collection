@@ -14,7 +14,7 @@ export default function MovieForm({ watched, onSubmit, onClose, movie }) {
   const [searchTerm, setSearchTerm] = useState(""); // Movie search term
   const [searchResults, setSearchResults] = useState([]); // Search results
   const [searchTimeout, setSearchTimeout] = useState(null); // Timeout for API call
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Initialize form fields if editing an existing movie
   useEffect(() => {
@@ -25,7 +25,9 @@ export default function MovieForm({ watched, onSubmit, onClose, movie }) {
       setWatchDate(
         movie.user?.watchDate ? movie.user.watchDate.split("T")[0] : ""
       );
-      setUserScore(movie.user?.userScore ? parseInt(movie.user.userScore, 10) : 0);
+      setUserScore(
+        movie.user?.userScore ? parseInt(movie.user.userScore, 10) : 0
+      );
       setImageLink(movie.imageLink || "");
     }
   }, [movie]);
@@ -156,7 +158,11 @@ export default function MovieForm({ watched, onSubmit, onClose, movie }) {
       if (res.data) {
         setMovieName(res.data.Title || "");
         setDirectorName(res.data.Director || "");
-        setReleaseDate(res.data.Released ? new Date(res.data.Released).toISOString().split("T")[0] : "");
+        setReleaseDate(
+          res.data.Released
+            ? new Date(res.data.Released).toISOString().split("T")[0]
+            : ""
+        );
         setImageLink(res.data.Poster || "");
       }
     } catch (error) {
@@ -167,7 +173,13 @@ export default function MovieForm({ watched, onSubmit, onClose, movie }) {
   return (
     <div className="form-overlay">
       <form className="movie-form" onSubmit={handleSubmit}>
-        <h2>{movie ? "Edit Movie" : watched ? "Add to Collection" : "Add to Wishlist"}</h2>
+        <h2>
+          {movie
+            ? "Edit Movie"
+            : watched
+            ? "Add to Collection"
+            : "Add to Wishlist"}
+        </h2>
 
         <label>
           <span>Search Movie</span>
@@ -278,7 +290,13 @@ export default function MovieForm({ watched, onSubmit, onClose, movie }) {
           {imageLink && (
             <div>
               <span>Uploaded Image: </span>
-              <img src={imageLink} alt="Movie poster" width={100} height={500} className="center-image"/>
+              <img
+                src={imageLink}
+                alt="Movie poster"
+                width={100}
+                height={500}
+                className="center-image"
+              />
             </div>
           )}
         </label>
@@ -287,7 +305,13 @@ export default function MovieForm({ watched, onSubmit, onClose, movie }) {
           <button type="submit" disabled={!movie && uploadProgress < 100}>
             {movie ? "Update" : "Submit"}
           </button>
-          <button type="button" onClick={() => {resetForm(); onClose();}}>
+          <button
+            type="button"
+            onClick={() => {
+              resetForm();
+              onClose();
+            }}
+          >
             Cancel
           </button>
         </div>
