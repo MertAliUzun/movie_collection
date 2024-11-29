@@ -18,6 +18,7 @@ body {
   color: var(--foreground);
   background: linear-gradient(#0f0c29, #302b63, #24243e);
   font-family: Arial, Helvetica, sans-serif;
+  min-height: 100dvh;
 }
 
 /* Navbar */
@@ -380,7 +381,7 @@ body {
   .movie-header h2 {
     font-size: 32px; /* Default font size for larger screens */
     margin-left: 20px;
-    margin-right: 2rem;
+    margin-right: 1rem;
     text-align: center;
   }
   .movie-header p {
@@ -399,7 +400,7 @@ body {
   .movie-header-wish h2 {
     font-size: 32px; /* Default font size for larger screens */
     margin-left: 20px;
-    margin-right: 2rem;
+    margin-right: 1rem;
     text-align: center;
   }
   .movie-header-wish p {
@@ -445,6 +446,9 @@ body {
   
   .delete-movie-button {
     margin-right: 25px;
+  }
+  .sort{
+    font-size: 18px;
   }
 
 }
