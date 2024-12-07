@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import MovieForm from "@/components/MovieForm";
+import LoginForm from "@/components/LoginForm";
 import { FaStar, FaTrash, FaEdit } from "react-icons/fa";
 import axios from "axios";
 
@@ -10,40 +11,50 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState("collection");
   const [showForm, setShowForm] = useState(false);
   const [currentMovie, setCurrentMovie] = useState(null);
-  const [sortOption, setSortOption] = useState("movieName"); // Sorting criteria
-  const [sortDirection, setSortDirection] = useState("ascending"); // Sorting direction (ascending/descending)
+  const [sortOption, setSortOption] = useState("movieName");
+  const [sortDirection, setSortDirection] = useState("ascending");
+  const [userName, setUser] = useState(null); // Track logged-in user
 
   useEffect(() => {
-    fetchMovies();
-  }, []);
+    // If the user is logged in, fetch the movies
+    if (userName) {
+      fetchMovies();
+    }
+  }, [userName]);
 
   const fetchMovies = async () => {
     try {
-      const res = await axios.get("/api/movies");
+      const res = await axios.get("/api/movies", {
+        headers: {
+          "clientName": userName // Send the logged-in user's clientName
+        }
+      });
       setMovies(res.data);
     } catch (error) {
       console.error("Error fetching movies:", error);
     }
   };
 
-  // Sorting function based on selected option and direction
+  const handleLogin = (userName) => {
+    setUser(userName); // Set the logged-in user's name
+  };
+
   const sortMovies = (movies, option, direction) => {
     return movies.sort((a, b) => {
       let comparison = 0;
 
       if (option === "userScore") {
-        comparison = b.user?.userScore - a.user?.userScore; // Sort by user score
+        comparison = b.user?.userScore - a.user?.userScore;
       } else if (option === "watchDate") {
-        comparison = new Date(b.user?.watchDate) - new Date(a.user?.watchDate); // Sort by watch date
+        comparison = new Date(b.user?.watchDate) - new Date(a.user?.watchDate);
       } else if (option === "releaseDate") {
-        comparison = new Date(b.releaseDate) - new Date(a.releaseDate); // Sort by release date
+        comparison = new Date(b.releaseDate) - new Date(a.releaseDate);
       } else if (option === "movieName") {
-        comparison = a.movieName.localeCompare(b.movieName); // Sort by movie name
+        comparison = a.movieName.localeCompare(b.movieName);
       } else if (option === "directorName") {
-        comparison = a.directorName.localeCompare(b.directorName); // Sort by director name
+        comparison = a.directorName.localeCompare(b.directorName);
       }
 
-      // If sorting in descending order, flip the comparison result
       return direction === "ascending" ? comparison : -comparison;
     });
   };
@@ -95,8 +106,15 @@ export default function Home() {
     );
   };
 
+  // If no user is logged in, show the LoginForm
+  if (!userName) {
+    return <LoginForm onLogin={handleLogin} />;
+  }
+
   return (
     <div className="home-container">
+      <h1>Welcome, {userName}</h1> {/* Display the logged-in user's name */}
+      
       {/* Navbar */}
       <nav className="navbar">
         <button
@@ -115,27 +133,30 @@ export default function Home() {
 
       {/* Sorting Dropdown */}
       {activeTab === "collection" ? (
-      <div className="sort">
-        <div className="sort-options">
-          <label htmlFor="sortBy" className="sortBy">Sort By:</label>
-          <select
-            id="sortBy"
-            value={sortOption}
-            onChange={(e) => setSortOption(e.target.value)}
-          >
-            <option value="movieName">Movie Name</option>
-            <option value="directorName">Director Name</option>
-            <option value="releaseDate">Release Date</option>
-            <option value="watchDate">Watch Date</option>
-            <option value="userScore">User Score</option>
-          </select>
-        </div>
-        </div>
-        ) : (
-
-          <div className="sort">
+        <div className="sort">
           <div className="sort-options">
-            <label htmlFor="sortBy" className="sortBy">Sort By:</label>
+            <label htmlFor="sortBy" className="sortBy">
+              Sort By:
+            </label>
+            <select
+              id="sortBy"
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+            >
+              <option value="movieName">Movie Name</option>
+              <option value="directorName">Director Name</option>
+              <option value="releaseDate">Release Date</option>
+              <option value="watchDate">Watch Date</option>
+              <option value="userScore">User Score</option>
+            </select>
+          </div>
+        </div>
+      ) : (
+        <div className="sort">
+          <div className="sort-options">
+            <label htmlFor="sortBy" className="sortBy">
+              Sort By:
+            </label>
             <select
               id="sortBy"
               value={sortOption}
@@ -146,14 +167,15 @@ export default function Home() {
               <option value="releaseDate">Release Date</option>
             </select>
           </div>
-          </div>
-        )}
+        </div>
+      )}
 
-        
-        {/* Sorting Direction Dropdown */}
-        <div className="sort">
+      {/* Sorting Direction Dropdown */}
+      <div className="sort">
         <div className="sort-direction">
-          <label htmlFor="sortDirection" className="sortBy">Direction:</label>
+          <label htmlFor="sortDirection" className="sortBy">
+            Direction:
+          </label>
           <select
             id="sortDirection"
             value={sortDirection}
@@ -187,12 +209,8 @@ export default function Home() {
                   {movie.user && renderStars(movie.user.userScore)}
                   <div className="container display: flex mt-3">
                     <div className="movie-header">
-                      <h2 className="mb-5" >
-                        {movie.movieName}
-                      </h2>
-                      <p className="mt-3" >
-                        {movie.directorName}
-                      </p>
+                      <h2 className="mb-5">{movie.movieName}</h2>
+                      <p className="mt-3">{movie.directorName}</p>
                     </div>
                     <div className="movie-details">
                       <p>
@@ -218,13 +236,17 @@ export default function Home() {
                       setShowForm(true);
                     }}
                   >
-                    <FaEdit size={window.innerWidth <= 768 ? 50 :30} />
+                    <FaEdit
+                      size={window.innerWidth <= 768 ? 50 : 30}
+                    />
                   </button>
                   <button
                     className="delete-movie-button"
                     onClick={() => handleDeleteMovie(movie._id)}
                   >
-                    <FaTrash size={window.innerWidth <= 768 ? 50 :30} />
+                    <FaTrash
+                      size={window.innerWidth <= 768 ? 50 : 30}
+                    />
                   </button>
                 </div>
               </div>
@@ -249,15 +271,8 @@ export default function Home() {
                 <div className="movie-info">
                   <div className="container display: flex mt-3">
                     <div className="movie-header-wish">
-                      <h2 className="mb-5">
-                        {movie.movieName}
-                      </h2>
-                      <p
-                        className="mt-5"
-                        
-                      >
-                        {movie.directorName}
-                      </p>
+                      <h2 className="mb-5">{movie.movieName}</h2>
+                      <p className="mt-5">{movie.directorName}</p>
                     </div>
                     <div className="movie-details-wish">
                       <p>
@@ -275,13 +290,17 @@ export default function Home() {
                       setShowForm(true);
                     }}
                   >
-                    <FaEdit size={window.innerWidth <= 768 ? 50 :30} />
+                    <FaEdit
+                      size={window.innerWidth <= 768 ? 50 : 30}
+                    />
                   </button>
                   <button
                     className="delete-movie-button"
                     onClick={() => handleDeleteMovie(movie._id)}
                   >
-                    <FaTrash size={window.innerWidth <= 768 ? 50 :30} />
+                    <FaTrash
+                      size={window.innerWidth <= 768 ? 50 : 30}
+                    />
                   </button>
                 </div>
               </div>
@@ -311,6 +330,7 @@ export default function Home() {
             setCurrentMovie(null);
           }}
           movie={currentMovie}
+          userName={userName} 
         />
       )}
     </div>

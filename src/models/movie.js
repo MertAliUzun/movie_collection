@@ -12,6 +12,7 @@ const MovieSchema = new mongoose.Schema({
   watched: { type: Boolean, required: true },
   user: { type: UserSchema, required: false },
   imageLink: { type: String, required: false }, // Yeni alan: Film görseli
+  userName: { type: String, required: true },
 });
 
 const Movie = mongoose.models.Movie || mongoose.model("Movie", MovieSchema);

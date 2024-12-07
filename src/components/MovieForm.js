@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
 
-export default function MovieForm({ watched, onSubmit, onClose, movie }) {
+export default function MovieForm({ watched, onSubmit, onClose, movie, userName }) {
   const [movieName, setMovieName] = useState("");
   const [directorName, setDirectorName] = useState("");
   const [releaseDate, setReleaseDate] = useState("");
@@ -15,6 +15,7 @@ export default function MovieForm({ watched, onSubmit, onClose, movie }) {
   const [searchResults, setSearchResults] = useState([]); // Search results
   const [searchTimeout, setSearchTimeout] = useState(null); // Timeout for API call
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState(false); // New state for upload progress
 
   // Initialize form fields if editing an existing movie
   useEffect(() => {
@@ -49,6 +50,8 @@ export default function MovieForm({ watched, onSubmit, onClose, movie }) {
     const file = e.target.files?.[0]; // Get the first file
     if (!file) return;
 
+    setIsUploading(true); // Set uploading to true while the file is uploading
+
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "movies"); // Replace with your Cloudinary upload preset
@@ -74,6 +77,8 @@ export default function MovieForm({ watched, onSubmit, onClose, movie }) {
       }
     } catch (error) {
       console.error("Error uploading image to Cloudinary:", error);
+    } finally {
+      setIsUploading(false); // Set uploading to false once the upload is complete or failed
     }
   };
 
@@ -86,6 +91,7 @@ export default function MovieForm({ watched, onSubmit, onClose, movie }) {
       releaseDate,
       watched,
       imageLink,
+      userName: userName,
       ...(watched && {
         user: {
           watchDate: watchDate || undefined,
@@ -302,7 +308,7 @@ export default function MovieForm({ watched, onSubmit, onClose, movie }) {
         </label>
 
         <div className="form-actions">
-          <button type="submit" disabled={!movie && uploadProgress < 100}>
+          <button type="submit" disabled={isUploading && uploadProgress < 100}>
             {movie ? "Update" : "Submit"}
           </button>
           <button
