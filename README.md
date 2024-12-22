@@ -111,6 +111,6 @@ Add, edit, and delete your movie archive. Every user has their own movie collect
 ## 📲 How to Use:
 1. Clone this repository:  
    ```bash
-   git clone https://github.com/your-repo/movie-collection.git
+   git clone https://github.com/MertAliUzun/movie_collection.git
 
 2. In default works on localhost:3000
