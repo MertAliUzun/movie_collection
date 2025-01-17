@@ -304,7 +304,7 @@ body {
 /* Modal Container */
 .search-modal {
   position: absolute;
-  top: 80px; /* Arama kutusunun hemen altına yerleştirmek için */
+  top: 220px; /* Arama kutusunun hemen altına yerleştirmek için */
   left: 50%;
   transform: translateX(-50%); /* Modal'ı tam ortalamak için */
   width: 90%; /* Form genişliğine uyum sağlasın */
@@ -446,6 +446,7 @@ body {
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   background-color: #fff;
+  margin-top: 10rem;
 }
 
 .auth-form h1 {

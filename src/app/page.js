@@ -113,7 +113,6 @@ export default function Home() {
 
   return (
     <div className="home-container">
-      <h1>Welcome, {userName}</h1> {/* Display the logged-in user's name */}
       
       {/* Navbar */}
       <nav className="navbar">
@@ -187,11 +186,11 @@ export default function Home() {
         </div>
       </div>
 
+      <h1 style={{color: "white", fontSize: 48, textAlign: "center", marginTop: 50}}>Welcome, User: {userName}</h1>
       {/* Content */}
       <div className="content">
         {activeTab === "collection" ? (
           <div>
-            <h1>Collection</h1>
             {sortMovies(
               movies.filter((movie) => movie.watched),
               sortOption,
